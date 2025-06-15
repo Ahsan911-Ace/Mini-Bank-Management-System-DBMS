@@ -29,24 +29,6 @@ Frontend: HTML, CSS (custom style.css), JavaScript (minimal, for feedback rating
 Server: XAMPP (Apache for PHP, SQL Server/MySQL for database).
 Tools: Draw.io (for ER diagram), Microsoft Word/Google Docs (for report).
 
-Project Structure
-banking_system/
-├── db_connect.php            # Database connection (SQL Server or MySQL)
-├── login.php                 # User signup and login page
-├── dashboard.php             # Main dashboard with balance and transactions
-├── profile.php               # User profile management
-├── accounts.php              # View account details
-├── transfers.php             # Transfer money between accounts
-├── deposit.php               # Deposit and withdraw money
-├── cards.php                 # Card management (view, block, order)
-├── feedback.php              # Submit and view feedback
-├── support.php               # Static support page with FAQs
-├── logout.php                # Logout functionality
-├── style.css                 # Custom CSS for styling
-├── create_database_sqlserver.sql  # SQL Server database schema
-├── create_database.sql       # MySQL database schema (if not migrated)
-├── er_diagram.drawio         # ER diagram source file
-├── report.pdf                # Project report (to be created)
 
 Database Schema
 The database consists of 5 interrelated tables:
@@ -55,8 +37,11 @@ accounts: Stores account details (account_id [PK], user_id [FK], account_type, a
 transactions: Records transactions (transaction_id [PK], account_id [FK], transaction_type, amount, description, target_account_id [FK], transaction_date)
 cards: Manages cards (card_id [PK], user_id [FK], card_type, card_number, card_holder, expiry_date, credit_limit, available_credit, is_blocked).
 feedback: Stores feedback (feedback_id [PK], user_id [FK], category, rating, comments, submitted_at).
+
 ER Diagram: Available in er_diagram.drawio (to be created using Draw.io).
-Normalization: Tables are in 3NF, with proper primary/foreign keys, unique constraints, and checks.
+
+Normalization:
+Tables are in 3NF, with proper primary/foreign keys, unique constraints, and checks.
 
 Usage
 Signup/Login:
