@@ -1,70 +1,286 @@
-Mini Banking System
+# 🏦 Banking System
 
-A simple web-based banking system developed as a semester project for the Database Systems course. This project demonstrates database design, SQL programming, and backend integration using Microsoft SQL Server (or MySQL, if not yet migrated) with a PHP and HTML/CSS frontend. It fulfills the requirements of creating a functional application with interrelated tables, user interactions, and proper documentation.
+A simple yet comprehensive web-based banking management system built with PHP and MySQL. This project demonstrates core banking functionalities including account management, transactions, card services, and user management.
 
-Project Overview
-The Mini Banking System allows users to:
-Register and log in securely.
-Manage their profile (update personal information).
-View checking and savings account balances.
-Perform transactions (deposit, withdrawal, transfer).
-Manage debit cards (view, block, order new).
-Submit and view feedback with ratings.
-Access a support page with contact details and FAQs.
-The project includes a responsive frontend styled with CSS and a backend integrated with a relational database, meeting the course requirements for database design, normalization, and SQL queries (DDL, DML, TCL).
+## 📋 Table of Contents
+- [Features](#features)
+- [Technologies Used](#technologies-used)
+- [Prerequisites](#prerequisites)
+- [Installation](#installation)
+- [Database Setup](#database-setup)
+- [Project Structure](#project-structure)
+- [Usage](#usage)
+- [Screenshots](#screenshots)
+- [Security Features](#security-features)
+- [Contributing](#contributing)
+- [License](#license)
 
-Features
-User Authentication: Secure signup and login with password hashing.
-Account Management: View checking and savings accounts with balances.
-Transactions: Deposit, withdraw, and transfer money with transaction history.
-Card Management: View card details, block cards, and order new cards.
-Feedback System: Submit feedback with category and rating; view past feedback.
-Search Functionality: Search transactions by date range (on dashboard).
-Delete Functionality: Delete submitted feedback.
-Responsive UI: Clean, user-friendly interface with sidebar navigation.
+## ✨ Features
 
-Technologies Used
-Backend: Microsoft SQL Server (recommended) or MySQL (current implementation), PHP (PDO for database connectivity).
-Frontend: HTML, CSS (custom style.css), JavaScript (minimal, for feedback rating).
-Server: XAMPP (Apache for PHP, SQL Server/MySQL for database).
-Tools: Draw.io (for ER diagram), Microsoft Word/Google Docs (for report).
+### 🔐 User Authentication
+- *Sign Up*: Create new user accounts with validation
+- *Sign In*: Secure login with password verification
+- *Session Management*: Secure user sessions
+- *Profile Management*: Update personal information
+
+### 💰 Account Management
+- *Multiple Account Types*: Checking and Savings accounts
+- *Account Overview*: View all accounts with balances
+- *Account Numbers*: Auto-generated unique account numbers
+
+### 💸 Transaction Services
+- *Money Transfers*: Transfer funds between accounts
+- *Deposits*: Add money to accounts
+- *Withdrawals*: Withdraw money with balance validation
+- *Transaction History*: View recent transactions on dashboard
+
+### 💳 Card Services
+- *Card Management*: View and manage debit/credit cards
+- *Order New Cards*: Request new cards with auto-generated numbers
+- *Block Cards*: Temporarily block cards for security
+- *Delete Cards*: Remove blocked cards permanently
+
+### 📝 Additional Features
+- *Feedback System*: Submit ratings and comments
+- *Customer Support*: Contact information and FAQ
+- *Responsive Dashboard*: Clean, intuitive user interface
+
+## 🛠 Technologies Used
+
+- *Backend*: PHP 7.4+
+- *Database*: MySQL 5.7+
+- *Frontend*: HTML5, CSS3, JavaScript
+- *Security*: Password hashing, Session management, Input validation
+- *Database Connection*: PDO (PHP Data Objects)
+
+## 📋 Prerequisites
+
+Before running this project, make sure you have:
+
+- *Web Server*: Apache or Nginx
+- *PHP*: Version 7.4 or higher
+- *MySQL*: Version 5.7 or higher
+- *XAMPP/WAMP/LAMP*: For local development (recommended for beginners)
+
+## 🚀 Installation
+
+### Step 1: Clone the Repository
+bash
+git clone https://github.com/yourusername/banking-system.git
+cd banking-system
 
 
-Database Schema
-The database consists of 5 interrelated tables:
-users: Stores user details (user_id [PK], full_name, username, email, phone, address, password, created_at).
-accounts: Stores account details (account_id [PK], user_id [FK], account_type, account_number, balance, created_at).
-transactions: Records transactions (transaction_id [PK], account_id [FK], transaction_type, amount, description, target_account_id [FK], transaction_date)
-cards: Manages cards (card_id [PK], user_id [FK], card_type, card_number, card_holder, expiry_date, credit_limit, available_credit, is_blocked).
-feedback: Stores feedback (feedback_id [PK], user_id [FK], category, rating, comments, submitted_at).
+### Step 2: Setup Web Server
+1. If using XAMPP:
+   - Copy the project folder to htdocs directory
+   - Start Apache and MySQL services from XAMPP Control Panel
 
-ER Diagram: Available in er_diagram.drawio (to be created using Draw.io).
+2. If using a live server:
+   - Upload files to your web hosting directory
+   - Ensure PHP and MySQL are available
 
-Normalization:
-Tables are in 3NF, with proper primary/foreign keys, unique constraints, and checks.
+### Step 3: Configure Database Connection
+1. Create a file named db_connect.php in the root directory:
+php
+<?php
+$host = 'localhost';
+$dbname = 'banking_system';
+$username = 'your_db_username';
+$password = 'your_db_password';
 
-Usage
-Signup/Login:
-On login.php, create an account or sign in:
-Accounts are automatically created (checking and savings) upon signup.
-Dashboard:
-View total balance, recent transactions, and search transactions by date.
-Profile:
-Update personal details (name, email, phone, address).
-Accounts:
-View checking and savings account balances.
-Transfers:
-Transfer money between accounts using account numbers.
-Deposit/Withdrawal:
-Deposit or withdraw money from selected accounts.
-Cards:
-View card details, block cards, or order new ones.
-Feedback:
-Submit feedback with a category and rating; view or delete past feedback.
+try {
+    $conn = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
+    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch(PDOException $e) {
+    die("Connection failed: " . $e->getMessage());
+}
+?>
 
-Acknowledgments
-XAMPP and SQL Server for free tools.
-Draw.io for ER diagram creation.
 
-Contact
-For issues or questions, contact the group via GitHub Issues or email.
+## 🗄 Database Setup
+
+### Step 1: Create Database
+sql
+CREATE DATABASE banking_system;
+USE banking_system;
+
+
+### Step 2: Run the SQL Script
+Execute the SQL commands from create_database.sql file in your MySQL client or phpMyAdmin:
+
+sql
+-- Users table
+CREATE TABLE users (
+    user_id INT AUTO_INCREMENT PRIMARY KEY,
+    full_name VARCHAR(255) NOT NULL,
+    username VARCHAR(50) UNIQUE NOT NULL,
+    email VARCHAR(255) UNIQUE NOT NULL,
+    phone VARCHAR(20),
+    address TEXT,
+    password VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Accounts table
+CREATE TABLE accounts (
+    account_id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT,
+    account_type ENUM('Checking', 'Savings') NOT NULL,
+    account_number VARCHAR(11) UNIQUE NOT NULL,
+    balance DECIMAL(11, 2) DEFAULT 0.00,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(user_id)
+);
+
+-- Transactions table
+CREATE TABLE transactions (
+    transaction_id INT AUTO_INCREMENT PRIMARY KEY,
+    account_id INT,
+    transaction_type ENUM('Deposit', 'Withdrawal', 'Transfer') NOT NULL,
+    amount DECIMAL(11, 2) NOT NULL,
+    description TEXT,
+    target_account_id INT NULL,
+    transaction_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (account_id) REFERENCES accounts(account_id),
+    FOREIGN KEY (target_account_id) REFERENCES accounts(account_id)
+);
+
+-- Cards table
+CREATE TABLE cards (
+    card_id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT,
+    card_type ENUM('Debit', 'Credit') NOT NULL,
+    card_number VARCHAR(15) UNIQUE NOT NULL,
+    card_holder VARCHAR(255) NOT NULL,
+    expiry_date VARCHAR(5) NOT NULL,
+    is_blocked BOOLEAN DEFAULT FALSE,
+    FOREIGN KEY (user_id) REFERENCES users(user_id)
+);
+
+-- Feedback table
+CREATE TABLE feedback (
+    feedback_id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT,
+    category ENUM('General Feedback', 'Bug Report', 'Feature Request', 'Complaint', 'Compliment') NOT NULL,
+    rating INT CHECK (rating >= 1 AND rating <= 5),
+    comments TEXT,
+    submitted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(user_id)
+);
+
+
+## 📁 Project Structure
+
+
+banking-system/
+│
+├── login.php              # Login and registration page
+├── dashboard.php          # Main dashboard
+├── accounts.php           # Account overview
+├── transfers.php          # Money transfer functionality
+├── deposit.php            # Deposit and withdrawal
+├── cards.php              # Card management
+├── feedback.php           # Feedback system
+├── profile.php            # User profile management
+├── support.php            # Customer support
+├── logout.php             # Logout functionality
+├── db_connect.php         # Database connection (create this)
+├── create_database.sql    # Database schema
+├── style.css              # Main stylesheet (create this)
+├── stylelogin.css         # Login page stylesheet (create this)
+└── README.md              # This file
+
+
+## 🎯 Usage
+
+### For New Users:
+1. Visit the login page (login.php)
+2. Click "Sign Up" to create a new account
+3. Fill in required information and agree to terms
+4. After successful registration, sign in with your credentials
+5. Two default accounts (Checking & Savings) will be created automatically
+
+### Main Features:
+- *Dashboard*: View total balance and recent transactions
+- *Accounts*: See all your accounts and balances
+- *Transfers*: Send money to other accounts using account numbers
+- *Deposit/Withdrawal*: Add or remove money from your accounts
+- *Cards*: Manage your debit/credit cards
+- *Profile*: Update personal information
+- *Feedback*: Rate the service and provide comments
+
+## 🔒 Security Features
+
+- *Password Hashing*: All passwords are securely hashed using PHP's password_hash()
+- *SQL Injection Prevention*: Uses prepared statements with PDO
+- *Session Management*: Secure session handling for user authentication
+- *Input Validation*: Server-side validation and sanitization
+- *XSS Protection*: HTML special characters are escaped
+
+## 🎨 Customization
+
+### Styling
+- Edit style.css for main application styling
+- Edit stylelogin.css for login page styling
+- The design uses a clean, modern interface with sidebar navigation
+
+### Adding Features
+The modular structure makes it easy to add new features:
+1. Create new PHP files for additional functionality
+2. Add navigation links in the sidebar
+3. Follow the existing code patterns for consistency
+
+## 🐛 Troubleshooting
+
+### Common Issues:
+
+1. *Database Connection Error*
+   - Check your database credentials in db_connect.php
+   - Ensure MySQL service is running
+
+2. *Session Issues*
+   - Make sure PHP sessions are enabled
+   - Check file permissions
+
+3. *Styling Issues*
+   - Ensure CSS files are in the correct directory
+   - Check browser console for any errors
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create your feature branch (git checkout -b feature/AmazingFeature)
+3. Commit your changes (git commit -m 'Add some AmazingFeature')
+4. Push to the branch (git push origin feature/AmazingFeature)
+5. Open a Pull Request
+
+## 📝 License
+
+This project is open source and available under the [MIT License](LICENSE).
+
+## 📞 Support
+
+If you encounter any issues or have questions:
+- Create an issue in this repository
+- Check the troubleshooting section above
+- Review the code comments for implementation details
+
+---
+
+*Note*: This is a demo banking system for educational purposes. Do not use in production without implementing additional security measures and compliance requirements for real banking applications.
+
+## 🚀 Getting Started Quickly
+
+For beginners who want to get started immediately:
+
+1. *Download XAMPP* from [https://www.apachefriends.org/](https://www.apachefriends.org/)
+2. *Install and start* Apache and MySQL
+3. *Clone this repository* to xampp/htdocs/banking-system
+4. *Open phpMyAdmin* (http://localhost/phpmyadmin)
+5. *Create database* named banking_system
+6. *Import* the SQL from create_database.sql
+7. *Create* db_connect.php with your database credentials
+8. *Visit* http://localhost/banking-system/login.php
+9. *Sign up* and start exploring!
+
+Happy Banking! 🎉
